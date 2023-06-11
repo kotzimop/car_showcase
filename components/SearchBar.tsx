@@ -16,42 +16,22 @@ const SearchButton = ({ otherClasses }: { otherClasses: string }) => (
   </button>
 );
 
-const SearchBar = () => {
-  const [manufacturer, setManuFacturer] = useState("");
-  const [model, setModel] = useState("");
+const SearchBar = ({setManuFacturer, setModel}:{setManuFacturer:any, setModel:any}) => {
+  const [searchManufacturer, setSearchManufacturer] = useState("");
+  const [searchModel, setSearchModel] = useState("");
   const router = useRouter()
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (manufacturer.trim() === "" && model.trim() === "") {
+    if (searchManufacturer.trim() === "" && searchModel.trim() === "") {
       return alert("Please provide some input");
     }
 
-    updateSearchParams(model.toLowerCase(), manufacturer.toLowerCase())
+    setModel(searchModel)
+    setManuFacturer(searchManufacturer)
 
   };
-
-  const updateSearchParams = (model:string, manufacturer:string) => {
-    const searchParams = new URLSearchParams(window.location.search);
-
-    if(model) {
-      searchParams.set('model', model);
-    } else {
-      searchParams.delete('model');
-    }
-
-    if(manufacturer) {
-      searchParams.set('manufacturer', manufacturer);
-    } else {
-      searchParams.delete('manufacturer');
-    }
-
-    const newPathName = `${window.location.pathname}?${searchParams.toString()}`
-    
-    router.push(newPathName);
- 
-  }
 
 
 
@@ -59,8 +39,8 @@ const SearchBar = () => {
     <form className="searchbar" onSubmit={handleSearch}>
       <div className="searchbar__item">
         <SearchManufacturer
-          manufacturer={manufacturer}
-          setManufacturer={setManuFacturer}
+          selected={searchManufacturer}
+          setSelected={setSearchManufacturer}
         />
         <SearchButton otherClasses="sm:hidden" />
       </div>
@@ -75,8 +55,8 @@ const SearchBar = () => {
         <input
           type="text"
           name="model"
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
+          value={searchModel}
+          onChange={(e) => setSearchModel(e.target.value)}
           placeholder="Tiguan..."
           className="searchbar__input"
         />
