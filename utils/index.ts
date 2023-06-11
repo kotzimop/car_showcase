@@ -1,21 +1,23 @@
 import { CarProps, FilterProps } from "@/types";
 
 export async function fetchCars(filters: FilterProps) {
-
-  const {manufacturer, year, model, limit, fuel } = filters
+  const { manufacturer, year, model, limit, fuel } = filters;
 
   const headers = {
     "X-RapidAPI-Key": "65cd3fcf00msh9c5ac2f18be3518p1eabd6jsn792c358f003f",
     "X-RapidAPI-Host": "cars-by-api-ninjas.p.rapidapi.com",
   };
 
-  const response = await fetch(`https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacturer}&year=${year}&model=${model}&limit=${limit}&fuel_type=${fuel}`, {
-    headers: headers,
-  });
+  const response = await fetch(
+    `https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacturer}&year=${year}&model=${model}&limit=${limit}&fuel_type=${fuel}`,
+    {
+      headers: headers,
+    }
+  );
 
-  const result = await response.json()
+  const result = await response.json();
 
-  return result
+  return result;
 }
 
 export const calculateCarRent = (city_mpg: number, year: number) => {
@@ -33,20 +35,28 @@ export const calculateCarRent = (city_mpg: number, year: number) => {
   return rentalRatePerDay.toFixed(0);
 };
 
-export const generateCarImageUrl = (car: CarProps, angle?:string) => {
-  // grkotzimop 
-const url = new URL('https://cdn.imagin.studio/getimage')
+export const generateCarImageUrl = (car: CarProps, angle?: string) => {
+  // grkotzimop
+  const url = new URL("https://cdn.imagin.studio/getimage");
 
-const {make, model, year} = car
+  const { make, model, year } = car;
 
-url.searchParams.append('customer', 'grkotzimop')
-url.searchParams.append('make', make)
-url.searchParams.append('modelFamily', model.split(' ')[0])
-url.searchParams.append('zoomType', 'fullscreen')
-url.searchParams.append('modelYear', `${year}`)
-url.searchParams.append('angle', `${angle}`)
+  url.searchParams.append("customer", "grkotzimop");
+  url.searchParams.append("make", make);
+  url.searchParams.append("modelFamily", model.split(" ")[0]);
+  url.searchParams.append("zoomType", "fullscreen");
+  url.searchParams.append("modelYear", `${year}`);
+  url.searchParams.append("angle", `${angle}`);
 
-return `${url}`
+  return `${url}`;
+};
 
-}
+export const updateSearchParams = (type: string, value: string) => {
+  const searchParams = new URLSearchParams(window.location.search);
 
+  searchParams.set(type, value);
+
+  const newPathName = `${window.location.pathname}?${searchParams.toString()}`;
+
+  return newPathName;
+};
